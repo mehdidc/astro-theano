@@ -1,4 +1,7 @@
 from sklearn.base import BaseEstimator
+
+import os
+os.environ["THEANO_FLAGS"]="base_compiledir=%s/.theano/p%d" % (os.getenv("HOME"), os.getpid())
 from lasagne.easy import SimpleNeuralNet
 import numpy as np
 from sklearn.preprocessing import StandardScaler, Imputer
