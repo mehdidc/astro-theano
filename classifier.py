@@ -16,7 +16,7 @@ class Classifier(BaseEstimator):
         self.clf = Pipeline([
             ('imputer', Imputer()),
             ('scaler', StandardScaler()),
-            ('neuralnet', SimpleNeuralNet(nb_hidden_list=[100],
+            ('neuralnet', SimpleNeuralNet(nb_hidden_list=[200],
                                           max_nb_epochs=400,
                                           batch_size=100,
                                           learning_rate=1.,
