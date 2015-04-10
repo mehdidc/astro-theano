@@ -5,6 +5,7 @@ os.environ["OMP_NUM_THREADS"] = "1"
 from lasagne.easy import SimpleNeuralNet
 import numpy as np
 from sklearn.preprocessing import StandardScaler, Imputer
+from sklearn.ensemble import AdaBoostClassifier
 from sklearn.pipeline import Pipeline
 import theano
 
@@ -12,15 +13,15 @@ import theano
 class Classifier(BaseEstimator):
 
     def __init__(self):
-
+        neural_net = SimpleNeuralNet(nb_hidden_list=[10, 10],
+                                     max_nb_epochs=100,
+                                     batch_size=100,
+                                     learning_rate=1.,
+                                     L1_factor=0.005)
         self.clf = Pipeline([
             ('imputer', Imputer()),
             ('scaler', StandardScaler()),
-            ('neuralnet', SimpleNeuralNet(nb_hidden_list=[200],
-                                          max_nb_epochs=400,
-                                          batch_size=100,
-                                          learning_rate=1.,
-                                          L1_factor=0.005)),
+            ('ada_neural_net', AdaBoostClassifier(base_estimator=neural_net))
         ])
 
     def __getattr__(self, attrname):
