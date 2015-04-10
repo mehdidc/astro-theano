@@ -13,15 +13,14 @@ import theano
 class Classifier(BaseEstimator):
 
     def __init__(self):
-        neural_net = SimpleNeuralNet(nb_hidden_list=[10, 10],
-                                     max_nb_epochs=100,
+        neural_net = SimpleNeuralNet(nb_hidden_list=[54, 32],
+                                     max_nb_epochs=254,
                                      batch_size=100,
-                                     learning_rate=1.,
-                                     L1_factor=0.005)
+                                     learning_rate=0.74586477334620205)
         self.clf = Pipeline([
             ('imputer', Imputer()),
             ('scaler', StandardScaler()),
-            ('ada_neural_net', AdaBoostClassifier(base_estimator=neural_net))
+            ('nnet', neural_net)
         ])
 
     def __getattr__(self, attrname):
