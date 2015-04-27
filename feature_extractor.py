@@ -30,7 +30,7 @@ class FeatureExtractor(object):
 
     def transform(self, X_dict):
         X = []
-        for x in X_dict:
+        for i, x in enumerate(X_dict):
             real_period = x['period'] / x['div_period']
             x_new = [x['magnitude_b'], x['magnitude_r'], real_period,
                      x['asym_b'], x['asym_r'], x['log_p_not_variable'],
@@ -43,12 +43,16 @@ class FeatureExtractor(object):
                 y_train = x['light_points_' + color]
                 y_sigma = x['error_points_' + color]
 
-                num_bins = 12
+                num_bins = 64
                 bins = np.linspace(0, 1, num_bins + 1)
 
-
-                model = Earth(penalty=2, max_terms=30, smooth=True, endspan=1, max_degree=50)
-                #x_train, y_train  = binify(bins, x_train, y_train)
+                model = Earth(penalty=0.3,
+                              max_terms=10,
+                              thresh=0,
+                              smooth=True,
+                              check_every=5,
+                              max_degree=10)
+                x_train, y_train  = binify(bins, x_train, y_train)
 
                 time_points_ = np.concatenate((x_train - 1.,
                                                 x_train,
@@ -65,7 +69,6 @@ class FeatureExtractor(object):
 
                 t_ = t
                 y_ = np.concatenate( (y[i_max:], y[0:i_max]), axis=0 )
-                print(len(y_))
 
                 x_new.append(t[i_max])
                 amplitude = max(y_) - min(y_)

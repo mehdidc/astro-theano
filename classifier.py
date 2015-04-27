@@ -1,13 +1,11 @@
 from sklearn.base import BaseEstimator
 
 import os
-os.environ["OMP_NUM_THREADS"] = "1"
-from lasagne.easy import SimpleNeuralNet
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler, Imputer
 from sklearn.pipeline import Pipeline
 import theano
-
 
 class Classifier(BaseEstimator):
 
@@ -15,16 +13,8 @@ class Classifier(BaseEstimator):
 
         self.clf = Pipeline([
             ('imputer', Imputer()),
-            ('scaler', StandardScaler()),
-            ('neuralnet', SimpleNeuralNet(nb_hidden_list=[100],
-                                          max_nb_epochs=400,
-                                          batch_size=100,
-                                          learning_rate=1.,
-                                          L1_factor=0.005)),
+            ('rf', RandomForestClassifier(n_estimators=100)),
         ])
-
-    def __getattr__(self, attrname):
-        return getattr(self.clf, attrname)
 
     def fit(self, X, y):
         X = X.astype(theano.config.floatX)
