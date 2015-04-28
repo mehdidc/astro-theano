@@ -1,6 +1,5 @@
 import numpy as np
 from pyearth.earth import Earth
-import matplotlib.pyplot as plt
 def unfold_sample(x, color):
     """Operates inplace"""
     real_period = x['period'] / x['div_period']
